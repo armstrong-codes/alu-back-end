@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 Exports user TODO list progress to JSON format.
 Usage:
