@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 Export user TODO list progress to CSV file.
 Usage: ./1-export_to_CSV.py <user_id>
