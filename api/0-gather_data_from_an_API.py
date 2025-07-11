@@ -1,42 +1,55 @@
 #!/usr/bin/python3
+"""
+Fetches and displays the TODO list progress of a given employee ID
+from the JSONPlaceholder REST API.
+"""
+
 import requests
 import sys
 
+
+def get_employee_todo_progress(employee_id):
+    """
+    Retrieves and prints the TODO progress of an employee.
+    Args:
+        employee_id (int): The ID of the employee
+    """
+    base_url = "https://jsonplaceholder.typicode.com"
+
+    # Get employee details
+    user_url = "{}/users/{}".format(base_url, employee_id)
+    user_response = requests.get(user_url)
+    if user_response.status_code != 200:
+        print("Employee not found.")
+        return
+
+    employee_name = user_response.json().get("name")
+
+    # Get todos
+    todos_url = "{}/todos?userId={}".format(base_url, employee_id)
+    todos_response = requests.get(todos_url)
+    todos = todos_response.json()
+
+    done_tasks = [task for task in todos if task.get("completed") is True]
+    total_tasks = len(todos)
+
+    print("Employee {} is done with tasks({}/{}):"
+          .format(employee_name, len(done_tasks), total_tasks))
+
+    for task in done_tasks:
+        print("\t {}".format(task.get("title")))
+
+
 if __name__ == "__main__":
-    # Check if an employee ID was provided
     if len(sys.argv) != 2:
         print("Usage: ./0-gather_data_from_an_API.py <employee_id>")
         sys.exit(1)
 
-    employee_id = sys.argv[1]
-
     try:
-        int(employee_id)
+        employee_id = int(sys.argv[1])
     except ValueError:
         print("Employee ID must be an integer.")
         sys.exit(1)
 
-    # Base URL of the API
-    base_url = "https://jsonplaceholder.typicode.com"
-
-    # Get employee data
-    user_url = f"{base_url}/users/{employee_id}"
-    response = requests.get(user_url)
-    if response.status_code != 200:
-        print("Employee not found.")
-        sys.exit(1)
-    employee = response.json()
-    employee_name = employee.get("name")
-
-    # Get employee's tasks
-    todos_url = f"{base_url}/todos?userId={employee_id}"
-    response = requests.get(todos_url)
-    todos = response.json()
-
-    # Filter completed tasks
-    done_tasks = [task for task in todos if task.get("completed") is True]
-
-    print(f"Employee {employee_name} is done with tasks({len(done_tasks)}/{len(todos)}):")
-    for task in done_tasks:
-        print(f"\t {task.get('title')}")
+    get_employee_todo_progress(employee_id)
 
