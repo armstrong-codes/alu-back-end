@@ -1,11 +1,20 @@
 #!/usr/bin/python3
+"""
+Fetches and displays the TODO list progress of a given employee ID
+from the JSONPlaceholder REST API.
+"""
 
 import requests
 import sys
 
 
 def get_employee_todo_progress(employee_id):
+    """
+    Retrieves and prints the TODO progress of an employee.
 
+    Args:
+        employee_id (int): The ID of the employee
+    """
     base_url = "https://jsonplaceholder.typicode.com"
 
     # Get employee details
