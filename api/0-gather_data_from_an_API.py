@@ -11,6 +11,7 @@ import sys
 def get_employee_todo_progress(employee_id):
     """
     Retrieves and prints the TODO progress of an employee.
+
     Args:
         employee_id (int): The ID of the employee
     """
